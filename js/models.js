@@ -72,10 +72,18 @@ class StoryList {
    * - obj of {title, author, url}
    *
    * Returns the new Story instance
+   * 
+   * Params: user, newStory 
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
+    // adds new story by sending instance to api
+    let data = {};
+    data.token = localStorage.getItem("token");
+    data.story = newStory;
+
+    let response = await axios.post(`${BASE_URL}/stories`, `{${data}}`);
   }
 }
 
