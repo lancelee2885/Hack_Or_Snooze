@@ -34,3 +34,12 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+/**
+ * When "Submit" button is clicked, show new story form
+ */
+function displayNewStoryForm() {
+  $("#new-story-form").show();
+}
+
+$('#nav-submit').on('click', displayNewStoryForm);

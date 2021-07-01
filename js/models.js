@@ -70,35 +70,33 @@ class StoryList {
    * - obj of {title, author, url}
    *
    * Returns the new Story instance
-   *
-   * Params: user, newStory
    */
 
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
     // adds new story by sending instance to api
+    console.log(newStory.author);
     let data = {};
     data.token = user.loginToken;
-    data.story = newStory;
-    console.log(data);
     let response = await axios.post(`${BASE_URL}/stories`, {
+      //comback to test when we can submit a story;
       token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RsYW5jZSIsImlhdCI6MTYyNTE1OTU5OH0.0uTYdwsq-J_VcfZOvexSGZni2GdQO4BRBUDdZlM7yus",
+        `${data.token}`,
       story: {
-        author: "Zac",
-        title: "Great book",
-        url: "https://www.bestbooks.com",
+        author: newStory.author,
+        title: newStory.title,
+        url: newStory.url
       },
     });
     let story = response.data.story;
-    return new Story(
-      story.storyId,
-      story.title,
-      story.author,
-      story.url,
-      story.username,
-      story.createdAt
-    );
+    return new Story({
+      storyId: story.storyId,
+      title: story.title,
+      author: story.author,
+      url: story.url,
+      username: story.username,
+      createdAt: story.createdAt
+    });
   }
 }
 

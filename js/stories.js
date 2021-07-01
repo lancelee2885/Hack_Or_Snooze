@@ -50,3 +50,21 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/**
+ * save data from new story form and call addStory to add new story on the list
+ */
+async function putNewStoryOnPage(evt) {
+  evt.preventDefault();
+  let $author = $("#author").val();
+  let $title = $("#title").val();
+  let $url = $("#url").val();
+  
+  let a = await storyList.addStory(currentUser, {author:$author, title:$title, url:$url});
+  console.log(a);
+  
+}
+
+$("#submit-new-story").on("click", putNewStoryOnPage);
+
+

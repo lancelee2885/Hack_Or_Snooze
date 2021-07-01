@@ -36,6 +36,7 @@
 <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
+    <a class="nav-link" href="#" id="nav-submit">Submit</a>
   </div>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -43,6 +44,18 @@
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
 </nav>
+<!-- area for submiting a new story. This area is initally hidden  -->
+<section>
+  <form action="#" id="new-story-form" class="hidden" method="post">
+    <label for="author">Author</label>
+    <input type="text" name="author" id="author">
+    <label for="title">Title</label>
+    <input type="text" name="title" id="title">
+    <label for="url">Url</label>
+    <input type="url" name="url" id="url">
+    <input type="submit" name="submit-new-story" id="submit-new-story">
+  </form>
+</section>
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
