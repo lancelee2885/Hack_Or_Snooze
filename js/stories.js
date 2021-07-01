@@ -59,12 +59,15 @@ async function putNewStoryOnPage(evt) {
   let $author = $("#author").val();
   let $title = $("#title").val();
   let $url = $("#url").val();
-  
-  let a = await storyList.addStory(currentUser, {author:$author, title:$title, url:$url});
-  console.log(a);
-  
+
+  let newStory = await storyList.addStory(currentUser, {
+    author: $author,
+    title: $title,
+    url: $url,
+  });
+
+  $("#new-story-form").hide();
+  $allStoriesList.prepend(generateStoryMarkup(newStory));
 }
 
 $("#submit-new-story").on("click", putNewStoryOnPage);
-
-

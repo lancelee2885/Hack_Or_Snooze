@@ -40,6 +40,8 @@ function updateNavOnLogin() {
  */
 function displayNewStoryForm() {
   $("#new-story-form").show();
+  hidePageComponents();
+  putStoriesOnPage();
 }
 
-$('#nav-submit').on('click', displayNewStoryForm);
+$("#nav-submit").on("click", displayNewStoryForm);
