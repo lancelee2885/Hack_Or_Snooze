@@ -7,7 +7,6 @@ const BASE_URL = "https://hack-or-snooze-v3.herokuapp.com";
  */
 
 class Story {
-
   /** Make instance of Story from data object about story:
    *   - {title, author, url, username, storyId, createdAt}
    */
@@ -29,7 +28,6 @@ class Story {
   }
 }
 
-
 /******************************************************************************
  * List of Story instances: used by UI to show story lists in DOM.
  */
@@ -47,7 +45,7 @@ class StoryList {
    *  - returns the StoryList instance.
    */
 
-  static async getStories() { 
+  static async getStories() {
     // Note presence of `static` keyword: this indicates that getStories is
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
@@ -61,7 +59,7 @@ class StoryList {
 
     // turn plain old story objects from API into instances of Story class
     // returns an array
-    const stories = response.data.stories.map(story => new Story(story));
+    const stories = response.data.stories.map((story) => new Story(story));
 
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
@@ -72,21 +70,37 @@ class StoryList {
    * - obj of {title, author, url}
    *
    * Returns the new Story instance
-   * 
-   * Params: user, newStory 
+   *
+   * Params: user, newStory
    */
 
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
     // adds new story by sending instance to api
     let data = {};
-    data.token = localStorage.getItem("token");
+    data.token = user.loginToken;
     data.story = newStory;
-
-    let response = await axios.post(`${BASE_URL}/stories`, `{${data}}`);
+    console.log(data);
+    let response = await axios.post(`${BASE_URL}/stories`, {
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RsYW5jZSIsImlhdCI6MTYyNTE1OTU5OH0.0uTYdwsq-J_VcfZOvexSGZni2GdQO4BRBUDdZlM7yus",
+      story: {
+        author: "Zac",
+        title: "Great book",
+        url: "https://www.bestbooks.com",
+      },
+    });
+    let story = response.data.story;
+    return new Story(
+      story.storyId,
+      story.title,
+      story.author,
+      story.url,
+      story.username,
+      story.createdAt
+    );
   }
 }
-
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)
@@ -98,21 +112,17 @@ class User {
    *   - token
    */
 
-  constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+  constructor(
+    { username, name, createdAt, favorites = [], ownStories = [] },
+    token
+  ) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
-    this.favorites = favorites.map(s => new Story(s));
-    this.ownStories = ownStories.map(s => new Story(s));
+    this.favorites = favorites.map((s) => new Story(s));
+    this.ownStories = ownStories.map((s) => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
@@ -138,7 +148,7 @@ class User {
         name: user.name,
         createdAt: user.createdAt,
         favorites: user.favorites,
-        ownStories: user.stories
+        ownStories: user.stories,
       },
       response.data.token
     );
@@ -165,7 +175,7 @@ class User {
         name: user.name,
         createdAt: user.createdAt,
         favorites: user.favorites,
-        ownStories: user.stories
+        ownStories: user.stories,
       },
       response.data.token
     );
@@ -191,7 +201,7 @@ class User {
           name: user.name,
           createdAt: user.createdAt,
           favorites: user.favorites,
-          ownStories: user.stories
+          ownStories: user.stories,
         },
         token
       );
