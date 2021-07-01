@@ -26,7 +26,7 @@ async function login(evt) {
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 }
-
+// adding event handler to login 
 $loginForm.on("submit", login);
 
 /** Handle signup form submission. */

@@ -47,7 +47,7 @@ class StoryList {
    *  - returns the StoryList instance.
    */
 
-  static async getStories() {
+  static async getStories() { 
     // Note presence of `static` keyword: this indicates that getStories is
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
@@ -60,6 +60,7 @@ class StoryList {
     });
 
     // turn plain old story objects from API into instances of Story class
+    // returns an array
     const stories = response.data.stories.map(story => new Story(story));
 
     // build an instance of our own class using the new array of stories
