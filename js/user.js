@@ -18,7 +18,7 @@ async function login(evt) {
   const password = $("#login-password").val();
 
   // User.login retrieves user info from API and returns User instance
-  // which we'll make the globally-available, logged-in user.
+  // which we'll make the globally-available, logged-in user..
   currentUser = await User.login(username, password);
 
   $loginForm.trigger("reset");
@@ -26,7 +26,7 @@ async function login(evt) {
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 }
-// adding event handler to login 
+// adding event handler to login
 $loginForm.on("submit", login);
 
 /** Handle signup form submission. */

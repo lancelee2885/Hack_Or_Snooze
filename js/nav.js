@@ -14,6 +14,15 @@ function navAllStories(evt) {
 
 $body.on("click", "#nav-all", navAllStories);
 
+/**
+ * When "Submit" is clicked in navbar, show a form to generate a new story
+ */
+ function displayNewStoryForm() {
+  $("#new-story-form").show();
+}
+
+$navSubmit.on("click", displayNewStoryForm);
+
 /** Show login/signup on click on "login" */
 
 function navLoginClick(evt) {
@@ -35,13 +44,3 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-/**
- * When "Submit" button is clicked, show new story form
- */
-function displayNewStoryForm() {
-  $("#new-story-form").show();
-  // hidePageComponents();
-  // putStoriesOnPage();
-}
-
-$("#nav-submit").on("click", displayNewStoryForm);
