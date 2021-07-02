@@ -18,6 +18,7 @@ class Story {
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
+    this.favorite = false;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -72,23 +73,20 @@ class StoryList {
    * Returns the new Story instance
    */
   async addStory(user, newStory) {
-
-    let response = await axios.post(`${BASE_URL}/stories`,
-      {
-        token:
-          `${user.loginToken}`,
-        story: newStory
-      });
+    let response = await axios.post(`${BASE_URL}/stories`, {
+      token: `${user.loginToken}`,
+      story: newStory,
+    });
 
     let story = response.data.story;
 
-    let addedStory =  new Story({
+    let addedStory = new Story({
       storyId: story.storyId,
       title: story.title,
       author: story.author,
       url: story.url,
       username: story.username,
-      createdAt: story.createdAt
+      createdAt: story.createdAt,
     });
 
     this.stories.unshift(addedStory);
