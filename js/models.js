@@ -11,14 +11,14 @@ class Story {
    *   - {title, author, url, username, storyId, createdAt}
    */
 
-  constructor({ storyId, title, author, url, username, createdAt }) {
+  constructor({ storyId, title, author, url, username, createdAt, favorite=false}) {
     this.storyId = storyId;
     this.title = title;
     this.author = author;
     this.url = url;
     this.username = username;
     this.createdAt = createdAt;
-    this.favorite = false;
+    this.favorite = favorite;
   }
 
   /** Parses hostname out of URL and returns it. */
@@ -73,19 +73,11 @@ class StoryList {
    * Returns the new Story instance
    */
   async addStory(user, newStory) {
-<<<<<<< HEAD
+    console.debug("addStory");
     let response = await axios.post(`${BASE_URL}/stories`, {
       token: `${user.loginToken}`,
       story: newStory,
     });
-=======
-
-    let response = await axios.post(`${BASE_URL}/stories`,
-      {
-        token: user.loginToken,
-        story: newStory
-      });
->>>>>>> 7729bec1f903bf486ea66a9f0ad06fa884c15ac1
 
     let story = response.data.story;
 
@@ -101,6 +93,23 @@ class StoryList {
     this.stories.unshift(addedStory);
 
     return addedStory;
+  }
+
+  /**
+   * check if story in story list is added to favorite tag already
+   */
+
+  checkFavorites (){
+    console.debug("checkFavorites")
+    console.log(this.stories);
+    let storyIdArr = currentUser.favorites.map(fav => fav.storyId);
+    for (let i = 0; i < this.stories.length; i++){
+      if (storyIdArr.includes(this.stories[i].storyId)){
+        console.log("this.stories[i].storyId",this.stories[i].storyId);
+        this.stories[i].favorite = true;
+
+      }
+    }
   }
 }
 
@@ -123,8 +132,10 @@ class User {
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
-    this.favorites = favorites.map((s) => new Story(s));
+    this.favorites = favorites.map((s) => new Story({...s, favorite: true}));
     this.ownStories = ownStories.map((s) => new Story(s));
+    
+    
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;

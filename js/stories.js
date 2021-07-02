@@ -7,6 +7,8 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
+  // if(currentUser)?
+  storyList.checkFavorites();
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
@@ -21,10 +23,13 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
+  // if (storyList.checkFavorites())
 
   const hostName = story.getHostName();
+  // add empty star, once clicked, fill the star
   return $(`
       <li id="${story.storyId}">
+        <span class="far fa-star" id="star-btn"></span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -34,6 +39,14 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
+$allStoriesList.on("click", "#star-btn", function (e) {
+  if (e.target.className === "far fa-star") {
+    e.target.className = "fas fa-star";
+  } else {
+    e.target.className = "far fa-star"
+  }
+})
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
