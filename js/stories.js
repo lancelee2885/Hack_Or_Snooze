@@ -52,21 +52,24 @@ function putStoriesOnPage() {
 }
 
 /**
- * save data from new story form and call addStory to add new story on the list
+ * Sending data to server-side from new story form and prepend new story to DOM
  */
 async function putNewStoryOnPage(evt) {
   evt.preventDefault();
-  let $author = $("#author").val();
-  let $title = $("#title").val();
-  let $url = $("#url").val();
+  let author = $("#author").val();
+  let title = $("#title").val();
+  let url = $("#url").val();
 
   let newStory = await storyList.addStory(currentUser, {
-    author: $author,
-    title: $title,
-    url: $url,
+    author,
+    title,
+    url
   });
 
-  $("#new-story-form").hide();
+  //hide the form once submited
+  $newStoryForm.hide();
+
+  //update story list in DOM
   $allStoriesList.prepend(generateStoryMarkup(newStory));
 }
 
