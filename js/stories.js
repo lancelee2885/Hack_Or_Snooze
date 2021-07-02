@@ -24,7 +24,6 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
   // if (storyList.checkFavorites())
-
   const hostName = story.getHostName();
   // add empty star, once clicked, fill the star
   let favorited = story.favorite ? "fas" : "far";
@@ -48,7 +47,7 @@ $allStoriesList.on("click", "#star-btn", function (e) {
     $(e.target).toggleClass("far");
 
     if ($(e.target).hasClass("fas")) {
-      console.log($(e.target).parent().attr("id"));
+      // console.log($(e.target).parent().attr("id"));
       addFavorite($(e.target).parent().attr("id"));
     } else {
       removeFavorite($(e.target).parent().attr("id"));
@@ -103,7 +102,10 @@ async function addFavorite(storyId) {
   let response = await axios.post(
     `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
   );
-  console.log("add", response);
+
+  currentUser.favorites = response.data.user.favorites.map(fav => new Story({...fav, favorite:true}));
+  // console.log(currentUser.favorites);
+  
 }
 
 async function removeFavorite(storyId) {
@@ -113,5 +115,16 @@ async function removeFavorite(storyId) {
   let response = await axios.delete(
     `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
   );
-  console.log("delete", response);
+  // console.log("delete", response);
+  console.log("this is from delete method", response);
+  currentUser.favorites = response.data.user.favorites.map(fav => new Story({...fav, favorite:true}));
+
+}
+
+function generateFavoritesMarkUp (){
+
+  for (let i=0; i<currentUser.favorites.length; i++){
+    let $favoritedStoryLi = generateStoryMarkup(currentUser.favorites[i]);
+    $favoritesList.append($favoritedStoryLi);
+  }
 }

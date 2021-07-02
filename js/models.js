@@ -91,6 +91,7 @@ class StoryList {
     });
 
     this.stories.unshift(addedStory);
+    
 
     return addedStory;
   }
@@ -101,13 +102,13 @@ class StoryList {
 
   checkFavorites (){
     console.debug("checkFavorites")
-    console.log(this.stories);
     let storyIdArr = currentUser.favorites.map(fav => fav.storyId);
     for (let i = 0; i < this.stories.length; i++){
       if (storyIdArr.includes(this.stories[i].storyId)){
-        console.log("this.stories[i].storyId",this.stories[i].storyId);
+        // console.log("this.stories[i].storyId",this.stories[i].storyId);
         this.stories[i].favorite = true;
-
+      } else{
+        this.stories[i].favorite = false;
       }
     }
   }
