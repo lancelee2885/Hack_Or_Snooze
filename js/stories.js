@@ -42,7 +42,10 @@ function generateStoryMarkup(story) {
     `);
 }
 
-$allStoriesList.on("click", "#star-btn", function (e) {
+/**
+ * Toggles favorited/unfavorited star in the DOM and updates favorite story list
+ */
+$storiesListClass.on("click", "#star-btn", function (e) {
   {
     $(e.target).toggleClass("fas");
     $(e.target).toggleClass("far");
@@ -55,6 +58,16 @@ $allStoriesList.on("click", "#star-btn", function (e) {
     }
   }
 });
+
+/**
+ * Creates HTML list items for user favorites and appends to DOM
+ */
+function generateFavoritesMarkUp() {
+  for (let i = 0; i < currentUser.favorites.length; i++) {
+    let $favoritedStoryLi = generateStoryMarkup(currentUser.favorites[i]);
+    $favoritesList.append($favoritedStoryLi);
+  }
+}
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -95,13 +108,3 @@ async function putNewStoryOnPage(evt) {
 }
 
 $("#submit-new-story").on("click", putNewStoryOnPage);
-
-/**
- * Creates HTML list items for user favorites and appends to DOM
- */
-function generateFavoritesMarkUp() {
-  for (let i = 0; i < currentUser.favorites.length; i++) {
-    let $favoritedStoryLi = generateStoryMarkup(currentUser.favorites[i]);
-    $favoritesList.append($favoritedStoryLi);
-  }
-}

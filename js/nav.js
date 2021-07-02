@@ -48,10 +48,11 @@ function updateNavOnLogin() {
 }
 
 /**
- * display the list of favorite stories and also hide everything except nav bar.
+ * display the list of favorite stories and also hides everything except nav bar.
  */
 
 function displayFavoritesList() {
+  console.debug("displayFavorites");
   $favoritesList.empty();
   hidePageComponents();
   generateFavoritesMarkUp();

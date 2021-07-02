@@ -103,7 +103,7 @@ class StoryList {
   }
 
   /**
-   * check if story in story list is added to favorite tag already
+   * check if story in story list has correct favorite property and updates when needed
    */
 
   checkFavorites() {
@@ -111,7 +111,6 @@ class StoryList {
     let storyIdArr = currentUser.favorites.map((fav) => fav.storyId);
     for (let i = 0; i < this.stories.length; i++) {
       if (storyIdArr.includes(this.stories[i].storyId)) {
-        // console.log("this.stories[i].storyId",this.stories[i].storyId);
         this.stories[i].favorite = true;
       } else {
         this.stories[i].favorite = false;
@@ -245,7 +244,6 @@ Sends a post request to add a story to the user's favorites list on the server a
     currentUser.favorites = response.data.user.favorites.map(
       (fav) => new Story({ ...fav, favorite: true })
     );
-    // console.log(currentUser.favorites);
   }
   /**
 Sends a delete request to remove a story from the user's favorites list on the server and updates current user's favorites list on client side
