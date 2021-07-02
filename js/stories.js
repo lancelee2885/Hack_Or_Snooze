@@ -49,9 +49,9 @@ $allStoriesList.on("click", "#star-btn", function (e) {
 
     if ($(e.target).hasClass("fas")) {
       // console.log($(e.target).parent().attr("id"));
-      addFavorite($(e.target).parent().attr("id"));
+      currentUser.addFavorite($(e.target).parent().attr("id"));
     } else {
-      removeFavorite($(e.target).parent().attr("id"));
+      currentUser.removeFavorite($(e.target).parent().attr("id"));
     }
   }
 });
@@ -95,40 +95,6 @@ async function putNewStoryOnPage(evt) {
 }
 
 $("#submit-new-story").on("click", putNewStoryOnPage);
-
-/**
-Sends a post request to add a story to the user's favorites list on the server and updates current user's favorites list on client side
- */
-async function addFavorite(storyId) {
-  let user = localStorage.username;
-  let token = localStorage.token;
-
-  let response = await axios.post(
-    `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
-  );
-  // Current user's favorites are updated based on server response
-  currentUser.favorites = response.data.user.favorites.map(
-    (fav) => new Story({ ...fav, favorite: true })
-  );
-  // console.log(currentUser.favorites);
-}
-
-/**
-Sends a delete request to remove a story from the user's favorites list on the server and updates current user's favorites list on client side
- */
-async function removeFavorite(storyId) {
-  let user = localStorage.username;
-  let token = localStorage.token;
-
-  let response = await axios.delete(
-    `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
-  );
-
-  // Current user's favorites are updated based on server response
-  currentUser.favorites = response.data.user.favorites.map(
-    (fav) => new Story({ ...fav, favorite: true })
-  );
-}
 
 /**
  * Creates HTML list items for user favorites and appends to DOM

@@ -231,4 +231,36 @@ class User {
       return null;
     }
   }
+  /**
+Sends a post request to add a story to the user's favorites list on the server and updates current user's favorites list on client side
+ */
+  async addFavorite(storyId) {
+    let user = localStorage.username;
+    let token = localStorage.token;
+
+    let response = await axios.post(
+      `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
+    );
+    // Current user's favorites are updated based on server response
+    currentUser.favorites = response.data.user.favorites.map(
+      (fav) => new Story({ ...fav, favorite: true })
+    );
+    // console.log(currentUser.favorites);
+  }
+  /**
+Sends a delete request to remove a story from the user's favorites list on the server and updates current user's favorites list on client side
+ */
+  async removeFavorite(storyId) {
+    let user = localStorage.username;
+    let token = localStorage.token;
+
+    let response = await axios.delete(
+      `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
+    );
+
+    // Current user's favorites are updated based on server response
+    currentUser.favorites = response.data.user.favorites.map(
+      (fav) => new Story({ ...fav, favorite: true })
+    );
+  }
 }
