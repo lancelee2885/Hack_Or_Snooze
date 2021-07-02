@@ -27,9 +27,11 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
   // add empty star, once clicked, fill the star
+  let favorited = story.favorite ? "fas" : "far";
+
   return $(`
       <li id="${story.storyId}">
-        <span class="far fa-star" id="star-btn"></span>
+        <i class="${favorited} fa-star" id="star-btn"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -41,12 +43,18 @@ function generateStoryMarkup(story) {
 }
 
 $allStoriesList.on("click", "#star-btn", function (e) {
-  if (e.target.className === "far fa-star") {
-    e.target.className = "fas fa-star";
-  } else {
-    e.target.className = "far fa-star"
+  {
+    $(e.target).toggleClass("fas");
+    $(e.target).toggleClass("far");
+
+    if ($(e.target).hasClass("fas")) {
+      console.log($(e.target).parent().attr("id"));
+      addFavorite($(e.target).parent().attr("id"));
+    } else {
+      removeFavorite($(e.target).parent().attr("id"));
+    }
   }
-})
+});
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -76,7 +84,7 @@ async function putNewStoryOnPage(evt) {
   let newStory = await storyList.addStory(currentUser, {
     author,
     title,
-    url
+    url,
   });
 
   //hide the form once submited
@@ -87,3 +95,23 @@ async function putNewStoryOnPage(evt) {
 }
 
 $("#submit-new-story").on("click", putNewStoryOnPage);
+
+async function addFavorite(storyId) {
+  let user = localStorage.username;
+  let token = localStorage.token;
+
+  let response = await axios.post(
+    `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
+  );
+  console.log("add", response);
+}
+
+async function removeFavorite(storyId) {
+  let user = localStorage.username;
+  let token = localStorage.token;
+
+  let response = await axios.delete(
+    `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
+  );
+  console.log("delete", response);
+}
