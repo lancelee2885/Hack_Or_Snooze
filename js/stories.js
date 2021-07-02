@@ -7,8 +7,9 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
-  // if(currentUser)?
-  storyList.checkFavorites();
+  if (currentUser) {
+    storyList.checkFavorites();
+  }
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();

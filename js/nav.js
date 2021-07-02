@@ -9,7 +9,7 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
-  storyList.checkFavorites();
+  storyList.checkFavorite();
   $favoritesList.hide();
   putStoriesOnPage();
 }
