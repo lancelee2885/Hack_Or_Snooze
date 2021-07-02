@@ -25,7 +25,7 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
   // if (storyList.checkFavorites())
-  const hostName = story.getHostName();
+  const hostName = story.getHostName(story.url);
   // add empty star, once clicked, fill the star
   let favorited = story.favorite ? "fas" : "far";
 
@@ -96,6 +96,9 @@ async function putNewStoryOnPage(evt) {
 
 $("#submit-new-story").on("click", putNewStoryOnPage);
 
+/**
+Sends a post request to add a story to the user's favorites list on the server and updates current user's favorites list on client side
+ */
 async function addFavorite(storyId) {
   let user = localStorage.username;
   let token = localStorage.token;
@@ -103,12 +106,16 @@ async function addFavorite(storyId) {
   let response = await axios.post(
     `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
   );
-
-  currentUser.favorites = response.data.user.favorites.map(fav => new Story({...fav, favorite:true}));
+  // Current user's favorites are updated based on server response
+  currentUser.favorites = response.data.user.favorites.map(
+    (fav) => new Story({ ...fav, favorite: true })
+  );
   // console.log(currentUser.favorites);
-  
 }
 
+/**
+Sends a delete request to remove a story from the user's favorites list on the server and updates current user's favorites list on client side
+ */
 async function removeFavorite(storyId) {
   let user = localStorage.username;
   let token = localStorage.token;
@@ -116,15 +123,18 @@ async function removeFavorite(storyId) {
   let response = await axios.delete(
     `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
   );
-  // console.log("delete", response);
-  console.log("this is from delete method", response);
-  currentUser.favorites = response.data.user.favorites.map(fav => new Story({...fav, favorite:true}));
 
+  // Current user's favorites are updated based on server response
+  currentUser.favorites = response.data.user.favorites.map(
+    (fav) => new Story({ ...fav, favorite: true })
+  );
 }
 
-function generateFavoritesMarkUp (){
-
-  for (let i=0; i<currentUser.favorites.length; i++){
+/**
+ * Creates HTML list items for user favorites and appends to DOM
+ */
+function generateFavoritesMarkUp() {
+  for (let i = 0; i < currentUser.favorites.length; i++) {
     let $favoritedStoryLi = generateStoryMarkup(currentUser.favorites[i]);
     $favoritesList.append($favoritedStoryLi);
   }

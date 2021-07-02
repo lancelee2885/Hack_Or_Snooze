@@ -11,7 +11,15 @@ class Story {
    *   - {title, author, url, username, storyId, createdAt}
    */
 
-  constructor({ storyId, title, author, url, username, createdAt, favorite=false}) {
+  constructor({
+    storyId,
+    title,
+    author,
+    url,
+    username,
+    createdAt,
+    favorite = false,
+  }) {
     this.storyId = storyId;
     this.title = title;
     this.author = author;
@@ -23,9 +31,8 @@ class Story {
 
   /** Parses hostname out of URL and returns it. */
 
-  getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+  getHostName(url) {
+    return url.split("//")[1].split("/")[0];
   }
 }
 
@@ -91,7 +98,6 @@ class StoryList {
     });
 
     this.stories.unshift(addedStory);
-    
 
     return addedStory;
   }
@@ -100,14 +106,14 @@ class StoryList {
    * check if story in story list is added to favorite tag already
    */
 
-  checkFavorites (){
-    console.debug("checkFavorites")
-    let storyIdArr = currentUser.favorites.map(fav => fav.storyId);
-    for (let i = 0; i < this.stories.length; i++){
-      if (storyIdArr.includes(this.stories[i].storyId)){
+  checkFavorites() {
+    console.debug("checkFavorites");
+    let storyIdArr = currentUser.favorites.map((fav) => fav.storyId);
+    for (let i = 0; i < this.stories.length; i++) {
+      if (storyIdArr.includes(this.stories[i].storyId)) {
         // console.log("this.stories[i].storyId",this.stories[i].storyId);
         this.stories[i].favorite = true;
-      } else{
+      } else {
         this.stories[i].favorite = false;
       }
     }
@@ -133,10 +139,8 @@ class User {
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
-    this.favorites = favorites.map((s) => new Story({...s, favorite: true}));
+    this.favorites = favorites.map((s) => new Story({ ...s, favorite: true }));
     this.ownStories = ownStories.map((s) => new Story(s));
-    
-    
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
@@ -150,11 +154,14 @@ class User {
    */
 
   static async signup(username, password, name) {
+    // console.log(username, password, name);
     const response = await axios({
       url: `${BASE_URL}/signup`,
       method: "POST",
       data: { user: { username, password, name } },
     });
+    // console.log(response);
+    let user = response.data.user;
 
     return new User(
       {

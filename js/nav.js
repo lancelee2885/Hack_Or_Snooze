@@ -9,7 +9,7 @@
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
   hidePageComponents();
-  storyList.checkFavorite();
+  storyList.checkFavorites();
   $favoritesList.hide();
   putStoriesOnPage();
 }
@@ -19,7 +19,7 @@ $body.on("click", "#nav-all", navAllStories);
 /**
  * When "Submit" is clicked in navbar, show a form to generate a new story
  */
- function displayNewStoryForm() {
+function displayNewStoryForm() {
   $("#new-story-form").show();
   putStoriesOnPage();
 }
@@ -47,17 +47,15 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-
 /**
  * display the list of favorite stories and also hide everything except nav bar.
  */
 
-function displayFavoritesList (){
+function displayFavoritesList() {
   $favoritesList.empty();
   hidePageComponents();
   generateFavoritesMarkUp();
   $favoritesList.show();
-
 }
 
 $navFavorites.on("click", displayFavoritesList);
