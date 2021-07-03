@@ -32,7 +32,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName(url) {
-    return url.split("//")[1].split("/")[0];
+    //TODO: URL method here
+    return url.split("//")[1].split("/")[0]; 
   }
 }
 
@@ -105,11 +106,13 @@ class StoryList {
   /**
    * check if story in story list has correct favorite property and updates when needed
    */
-
+  //not only checking favorites but also mark 
   checkFavorites() {
     console.debug("checkFavorites");
     let storyIdArr = currentUser.favorites.map((fav) => fav.storyId);
+    // TODO: for of loop will do the same
     for (let i = 0; i < this.stories.length; i++) {
+      //TODO: this.stories[i].favorite = storyIdArr.includes(this.stories[i].storyId
       if (storyIdArr.includes(this.stories[i].storyId)) {
         this.stories[i].favorite = true;
       } else {
@@ -233,6 +236,7 @@ class User {
   /**
 Sends a post request to add a story to the user's favorites list on the server and updates current user's favorites list on client side
  */
+  //TODO: use this.user, this.token .... because we are in User Class
   async addFavorite(storyId) {
     let user = localStorage.username;
     let token = localStorage.token;
@@ -241,6 +245,7 @@ Sends a post request to add a story to the user's favorites list on the server a
       `${BASE_URL}/users/${user}/favorites/${storyId}?token=${token}`
     );
     // Current user's favorites are updated based on server response
+    //TODO: better to use "this" instead of currentUser
     currentUser.favorites = response.data.user.favorites.map(
       (fav) => new Story({ ...fav, favorite: true })
     );

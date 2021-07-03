@@ -27,7 +27,7 @@ function generateStoryMarkup(story) {
   // if (storyList.checkFavorites())
   const hostName = story.getHostName(story.url);
   // add empty star, once clicked, fill the star
-  let favorited = story.favorite ? "fas" : "far";
+  const favorited = story.favorite ? "fas" : "far";
 
   return $(`
       <li id="${story.storyId}">
@@ -44,6 +44,7 @@ function generateStoryMarkup(story) {
 
 /**
  * Toggles favorited/unfavorited star in the DOM and updates favorite story list
+ * TODO: make a name for this function, easier to test
  */
 $storiesListClass.on("click", "#star-btn", function (e) {
   {
@@ -63,6 +64,7 @@ $storiesListClass.on("click", "#star-btn", function (e) {
  * Creates HTML list items for user favorites and appends to DOM
  */
 function generateFavoritesMarkUp() {
+  //TODO: dont care i, for of loop here
   for (let i = 0; i < currentUser.favorites.length; i++) {
     let $favoritedStoryLi = generateStoryMarkup(currentUser.favorites[i]);
     $favoritesList.append($favoritedStoryLi);
